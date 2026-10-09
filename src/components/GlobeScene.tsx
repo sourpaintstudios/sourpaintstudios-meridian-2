@@ -59,7 +59,7 @@ function systemViewPose(sun: GeoPoint, moon: GeoPoint, from: THREE.Vector3, aspe
   const m = latLngToVector3(moon.lat, moon.lng, MOON_DIST);
   const target = s.clone().multiplyScalar(0.38);
 
-  let axis = new THREE.Vector3().crossVectors(s, m);
+  const axis = new THREE.Vector3().crossVectors(s, m);
   if (axis.lengthSq() < 1e-4) {
     axis.crossVectors(s, new THREE.Vector3(0, 1, 0));
     if (axis.lengthSq() < 1e-4) axis.set(1, 0, 0);
@@ -67,7 +67,7 @@ function systemViewPose(sun: GeoPoint, moon: GeoPoint, from: THREE.Vector3, aspe
   axis.normalize();
   if (from.lengthSq() > 1e-8 && axis.dot(from) < 0) axis.negate();
 
-  let polar = Math.acos(THREE.MathUtils.clamp(axis.y, -1, 1));
+  const polar = Math.acos(THREE.MathUtils.clamp(axis.y, -1, 1));
   const minP = 0.28;
   const maxP = Math.PI - 0.28;
   if (polar < minP || polar > maxP) {
