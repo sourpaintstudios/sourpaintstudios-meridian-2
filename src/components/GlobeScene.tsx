@@ -283,8 +283,9 @@ function Earth({ sun }: { sun: GeoPoint }) {
   const [dayMap, nightMap] = useTexture(["/textures/earth-day.jpg", "/textures/earth-night.png"]);
   dayMap.colorSpace = THREE.SRGBColorSpace;
   nightMap.colorSpace = THREE.SRGBColorSpace;
-  dayMap.anisotropy = 4;
-  nightMap.anisotropy = 4;
+  const maxAniso = useThree((st) => st.gl.capabilities.getMaxAnisotropy());
+  dayMap.anisotropy = Math.min(16, maxAniso);
+  nightMap.anisotropy = Math.min(8, maxAniso);
   const uniforms = useMemo(
     () => ({
       uDay: { value: dayMap },
@@ -300,7 +301,7 @@ function Earth({ sun }: { sun: GeoPoint }) {
 
   return (
     <mesh>
-      <sphereGeometry args={[EARTH_R, 96, 72]} />
+      <sphereGeometry args={[EARTH_R, 192, 144]} />
       <shaderMaterial
         key="earth-term-v5"
         vertexShader={earthVert}
